@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ShortLink</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Work+Sans:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/app.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="hero">
+        <span class="badge">ShortLink</span>
+        <h1>Shorten and share links fast.</h1>
+        <p>Clean URLs, simple workflow, and a neat dashboard for quick actions.</p>
+        <div class="hero-meta">
+          <span>Mode: <strong><%= algurathem %></strong></span>
+          <% if recaptcha_site_key && !recaptcha_site_key.to_s.strip.empty? %>
+            <span>Protected by reCAPTCHA v3</span>
+          <% else %>
+            <span>reCAPTCHA disabled</span>
+          <% end %>
+        </div>
+      </header>
+
+      <main class="grid">
+        <section class="card">
+          <h2>Encode URL</h2>
+          <p>Paste a full URL and get a short link you can share anywhere.</p>
+          <label class="field">
+            <span>Original URL</span>
+            <input id="encode-input" type="url" placeholder="https://codesubmit.io/library/react" />
+          </label>
+          <button id="encode-button" class="primary">Generate short link</button>
+          <div id="encode-result" class="result" hidden>
+            <div>
+              <span>Short URL</span>
+              <a id="short-link" href="#" target="_blank" rel="noreferrer"></a>
+            </div>
+            <button id="copy-button" class="ghost">Copy</button>
+          </div>
+          <p id="encode-error" class="error" hidden></p>
+        </section>
+
+        <section class="card">
+          <h2>Decode URL</h2>
+          <p>Resolve a short link back to the original URL.</p>
+          <label class="field">
+            <span>Short URL</span>
+            <input id="decode-input" type="text" placeholder="http://localhost:9292/Ab3kL9z" />
+          </label>
+          <button id="decode-button" class="secondary">Decode link</button>
+          <div id="decode-result" class="result" hidden>
+            <div>
+              <span>Original URL</span>
+              <a id="original-link" href="#" target="_blank" rel="noreferrer"></a>
+            </div>
+          </div>
+          <p id="decode-error" class="error" hidden></p>
+        </section>
+      </main>
+
+      <section class="tips">
+        <div>
+          <h3>Open a short link</h3>
+          <p>Paste the short URL into your browser to be redirected instantly.</p>
+        </div>
+        <div>
+          <h3>Keep it safe</h3>
+          <p>Use a strong <code>SHORTLINK_KEY</code> if you enable keyed hashing.</p>
+        </div>
+      </section>
+      <% if recaptcha_site_key && !recaptcha_site_key.to_s.strip.empty? %>
+        <p class="recaptcha-note">
+          This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.
+        </p>
+      <% end %>
+    </div>
+
+    <script>
+      window.ShortLinkConfig = {
+        recaptchaSiteKey: "<%= recaptcha_site_key.to_s %>",
+        algurathem: "<%= algurathem %>"
+      };
+    </script>
+    <% if recaptcha_site_key && !recaptcha_site_key.to_s.strip.empty? %>
+      <script src="https://www.google.com/recaptcha/api.js?render=<%= recaptcha_site_key %>"></script>
+    <% end %>
+    <script src="/app.js"></script>
+  </body>
+</html>
